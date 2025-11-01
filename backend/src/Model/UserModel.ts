@@ -1,7 +1,7 @@
 import  { model,Schema } from "mongoose"; 
 
 const userSchema = new Schema({ 
-    userIs:{
+    userId:{
         type:Schema.Types.ObjectId  , 
         unique:true
      },

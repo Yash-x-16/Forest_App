@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/model/sessionmodel.ts","./src/model/treemodel.ts","./src/model/usermodel.ts"],"version":"5.9.3"}
+{"root":["./src/index.ts","./src/model/sessionmodel.ts","./src/model/treemodel.ts","./src/model/usermodel.ts","./src/db/db.ts"],"version":"5.9.3"}
