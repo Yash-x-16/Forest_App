@@ -5,7 +5,7 @@ import { User } from "../db/Model/UserModel.js"
 import jwt, { type JwtPayload } from "jsonwebtoken"
 import { signinValidation } from "../validations/authValidator.js"
 import { tokenGenerator } from "../utils/TokenGenerator.js"
-import type { ObjectId, Schema } from "mongoose"
+
 
 export const SignUp = async(req:Request,res:Response)=>{
     const result = signupValidations.safeParse(req.body) 
@@ -67,15 +67,18 @@ export const SignIn = async(req:Request,res:Response)=>{
         return ; 
     }
     try {
-        const {email,password} = result.data ; 
+        const {email,password} = result.data ;  
+       
         const isUserAlreadyExists  = await User.findOne({
             email
         })
+
+      
         if(isUserAlreadyExists){
             const check = await bcrypt.compare(password,isUserAlreadyExists.password) ; 
             if(check){
-                const userId = isUserAlreadyExists.userId  
-                const token = tokenGenerator(userId as unknown as  ObjectId) 
+                const userId = isUserAlreadyExists._id.toString()   
+                const token = tokenGenerator(userId as string ) 
                 res.status(200).json({
                     message:"user Logged in" , 
                     token 
@@ -97,15 +100,14 @@ export const SignIn = async(req:Request,res:Response)=>{
 
 export const isUSer = async(req:Request,res:Response)=>{
     try {
-        const userId = req.userId ; 
+        const userId = req.userId ;  
+
         if(!userId){
             res.status(400).json({
                 message:"unauthorized"
             })
         }else{
-            const user = await User.findById({
-                userId
-            })
+            const user = await User.findById(userId)
             res.status(200).json({
                 message:"here is your user" , 
                 user

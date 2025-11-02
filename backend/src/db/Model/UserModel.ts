@@ -1,4 +1,6 @@
 import  { model,Schema } from "mongoose"; 
+import dotenv from "dotenv" 
+dotenv.config() 
 
 const userSchema = new Schema({ 
     userId:{
@@ -15,13 +17,12 @@ const userSchema = new Schema({
     password:{
         type:String  , 
         min:6,
-        select:false,
         required:true
     },
     profilePicture:{
         type:String , 
         required:false , 
-        default:"https://res.cloudinary.com/ddmtv1dut/image/upload/v1761449270/5907_ng3njp.jpg"
+        default:process.env.DEFAULT_PROFILE_PICTURE
     } , 
     email:{
         type:String  ,
