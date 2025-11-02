@@ -15,6 +15,7 @@ const userSchema = new Schema({
     password:{
         type:String  , 
         min:6,
+        select:false,
         required:true
     },
     profilePicture:{
