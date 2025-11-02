@@ -19,14 +19,20 @@ const sessionSchema = new Schema({
     
     isSuccesful:{
         type:Boolean , 
-        required:true
+        required:true,
+        default:false
     } , 
     
     sessionPoints:{
         type:Number  , 
         default:0 
     } ,
-    
+   
+    totalTime:{
+    type:Number , 
+    required:true 
+   }, 
+
     userId:{
         type:Schema.Types.ObjectId , 
         ref:"User" 

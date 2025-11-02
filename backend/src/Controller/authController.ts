@@ -110,7 +110,7 @@ export const isUSer = async(req:Request,res:Response)=>{
             const user = await User.findById(userId)
             res.status(200).json({
                 message:"here is your user" , 
-                user
+                user:user?.populate("trees","sessions")
             }) 
         }
     } catch (error) {
