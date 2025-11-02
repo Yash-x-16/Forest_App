@@ -1,7 +1,7 @@
 import type { Request, Response } from "express"
 import bcrypt from "bcrypt"
 import { signupValidations } from "../validations/authValidator.js"
-import { User } from "../Model/UserModel.js"
+import { User } from "../db/Model/UserModel.js"
 import jwt, { type JwtPayload } from "jsonwebtoken"
 export const SignUp = async(req:Request,res:Response)=>{
     const result = signupValidations.safeParse(req.body) 
@@ -16,31 +16,31 @@ export const SignUp = async(req:Request,res:Response)=>{
 
     try {
         const {email,password,username} = result.data 
-        const isUserAlreadyExists= await  User.find({
+        const isUserAlreadyExists= await  User.findOne({
             email
         }) 
-
-        if(isUserAlreadyExists.length>0){
+        console.log("already user is : ",isUserAlreadyExists)
+        if(isUserAlreadyExists){
+            res.status(400).json({
+                message:"user already exists"
+            })
+        }else{
             const salt = await bcrypt.genSalt(8) 
             const hashedPassword = await bcrypt.hash(password,salt)
           
             const createdUser = await User.create({
                 username , 
                 email , 
-                password:hashedPassword 
+                password:hashedPassword ,
+                createdAt:Date.now()
             })
             
             const token = jwt.sign({userId:createdUser.userId} as JwtPayload ,process.env.JWT_SECRET  as string) 
             
             res.status(201).json({
-                User:{...createdUser,
+                User:{createdUser,
                 password:null},
                 token
-            })
-
-        }else{
-            res.status(400).json({
-                message:"user already exists"
             })
         }
     } catch (error) {

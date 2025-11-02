@@ -5,9 +5,9 @@ const router= express.Router()
 
 try {
 
-    router.post('/signUp')    
-    router.post('/signIn')    
-    router.get('/isUser')
+    router.post('/signUp',SignUp)    
+    router.post('/signIn',SignUp)    
+    router.get('/isUser',SignUp)
          
 } catch (error) {
     console.log("error in the authRoute is",error)
