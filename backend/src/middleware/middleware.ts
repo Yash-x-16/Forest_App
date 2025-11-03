@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import jwt, { decode, type JwtPayload } from "jsonwebtoken"
+import jwt, { type JwtPayload } from "jsonwebtoken"
 export function Middleware(req:Request,res:Response,next:NextFunction){
     try {
         const token = req.headers["token"] 

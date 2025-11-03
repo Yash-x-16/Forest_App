@@ -14,6 +14,7 @@ export const createSession =async(req:Request,res:Response)=>{
         res.status(400).json({
             message:"invalid validations"
         })
+
         return 
     }
     try {
@@ -22,8 +23,11 @@ export const createSession =async(req:Request,res:Response)=>{
         
         const user = await User.findById(req.userId) 
         const tree = await Tree.findById(selectedTree) ; 
+        
         if (!tree) return res.status(404).json({ message: "Tree not found" });
-        const ownsTree = user?.Trees.includes(tree._id ) ;
+
+        const ownsTree = user?.Trees.includes(tree._id) ; 
+        
         if(!ownsTree || !tree.isFree){
             res.status(400).json({
                 message:"you don't own this tree"
@@ -33,15 +37,12 @@ export const createSession =async(req:Request,res:Response)=>{
 
         const newSession = await Session.create({
             selectedTree , 
-            startTime: Date.now() , 
             sessionPoints : 0 , 
             totalTime  ,
             createdAt:Date.now()  , 
-            endTime:Date.now()
         })
         
         res.status(200).json({
-
             message:"session created" , 
             sessionId:newSession.sessionId 
         })
@@ -53,7 +54,7 @@ export const createSession =async(req:Request,res:Response)=>{
 
 export const endSession =async(req:Request,res:Response)=>{
     try {
-        const {isSuccesful,sessionId} = req.body ;
+        const {isSuccesful,sessionId,endTime} = req.body ;
         const user = await  User.findById(req.userId)
         const session = await  Session.findById(sessionId)  
         if(!session || !user){
@@ -63,6 +64,7 @@ export const endSession =async(req:Request,res:Response)=>{
             return 
         }
          session.isSuccesful = isSuccesful ;   
+         session.endTime = endTime ; 
          session.sessionPoints = session.totalTime *2  ; 
          user.totalPoints += session.sessionPoints ; 
          await user.save() ; 

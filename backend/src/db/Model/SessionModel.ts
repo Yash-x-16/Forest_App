@@ -8,7 +8,7 @@ const sessionSchema = new Schema({
     } , 
     
     endTime:{
-        type:Date , 
+        type:Number , 
     } ,
     
     isSuccesful:{

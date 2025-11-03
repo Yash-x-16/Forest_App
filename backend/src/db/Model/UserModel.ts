@@ -1,5 +1,6 @@
 import  { model,Schema } from "mongoose"; 
 import dotenv from "dotenv" 
+import { string } from "zod";
 dotenv.config() 
 
 const userSchema = new Schema({ 
@@ -7,6 +8,12 @@ const userSchema = new Schema({
         type:Schema.Types.ObjectId  , 
         unique:true
      },
+
+     type:{
+        type:String , 
+        default:"user"
+     } ,
+      
     username:{
         type:String , 
         unique:true ,
