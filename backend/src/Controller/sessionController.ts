@@ -63,7 +63,13 @@ export const endSession =async(req:Request,res:Response)=>{
             })
             return 
         }
-         session.isSuccesful = isSuccesful ;   
+        if(session.totalTime === endTime){
+             session.isSuccesful = true ; 
+        }
+        else{
+
+            session.isSuccesful = false ;
+        }   
          session.endTime = endTime ; 
          session.sessionPoints = session.totalTime *2  ; 
          user.totalPoints += session.sessionPoints ; 
