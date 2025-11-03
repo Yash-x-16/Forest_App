@@ -3,7 +3,7 @@ import z from "zod"
 
 export const sessionValidations = z.object({
     totalTime:z.number() , 
-    selectedTree:Schema.Types.ObjectId ,  
+    selectedTree:z.string() ,  
     startTime:z.date().optional() , 
     endTime:z.date().optional()
 })

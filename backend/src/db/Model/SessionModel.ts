@@ -7,14 +7,8 @@ const sessionSchema = new Schema({
         unique:true 
     } , 
     
-    startTime:{
-        type:Date , 
-        required:true 
-    } , 
-    
     endTime:{
         type:Date , 
-        required:true 
     } ,
     
     isSuccesful:{
@@ -42,6 +36,7 @@ const sessionSchema = new Schema({
         type:Schema.Types.ObjectId , 
         ref:"Tree"
     },
+
     createdAt:{
     type:Date , 
     required:true   

@@ -5,6 +5,7 @@ import { User } from "../db/Model/UserModel.js"
 import jwt, { type JwtPayload } from "jsonwebtoken"
 import { signinValidation } from "../validations/authValidator.js"
 import { tokenGenerator } from "../utils/TokenGenerator.js"
+import { Tree } from "../db/Model/TreeModel.js"
 
 
 export const SignUp = async(req:Request,res:Response)=>{
@@ -23,12 +24,15 @@ export const SignUp = async(req:Request,res:Response)=>{
         const isUserAlreadyExists= await  User.findOne({
             email
         }) 
-        console.log("already user is : ",isUserAlreadyExists)
         if(isUserAlreadyExists){
             res.status(400).json({
                 message:"user already exists"
             })
         }else{
+            const trees = await Tree.find({
+                isFree:true 
+            }) 
+
             const salt = await bcrypt.genSalt(8) 
             const hashedPassword = await bcrypt.hash(password,salt)
           
@@ -36,14 +40,14 @@ export const SignUp = async(req:Request,res:Response)=>{
                 username , 
                 email , 
                 password:hashedPassword ,
-                createdAt:Date.now()
+                createdAt:Date.now() , 
+                Trees:trees               
             })
             
-            const token = jwt.sign({userId:createdUser.userId} as JwtPayload ,process.env.JWT_SECRET  as string) 
+            const token = jwt.sign({userId:createdUser._id} as JwtPayload ,process.env.JWT_SECRET  as string) 
             
             res.status(201).json({
-                User:{createdUser,
-                password:null},
+                User:createdUser,
                 token
             })
         }
@@ -119,4 +123,4 @@ export const isUSer = async(req:Request,res:Response)=>{
             message:"error occured"
         })
     }
-}
+} 

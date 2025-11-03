@@ -11,7 +11,6 @@ export function Middleware(req:Request,res:Response,next:NextFunction){
         }
 
         const decoded = jwt.verify(token as string ,process.env.JWT_SECRET as string) as JwtPayload 
-        console.log("decoded is : ",decoded) 
         if(decoded.userId){
             req.userId = decoded.userId ; 
             next() ; 
