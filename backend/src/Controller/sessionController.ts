@@ -88,7 +88,6 @@ export const endSession =async(req:Request,res:Response)=>{
     }
 }
 
-
 export const getAllSessions = async(req:Request,res:Response)=>{
 
     try {
